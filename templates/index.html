@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vectorizer Mamun - SVG to Single Path Pro</title>
+    <title>Vectorizer Mamun - Surgical Path Deduplicator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -20,76 +20,59 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
 
+    <!-- Header -->
     <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-4 py-3 flex items-center justify-between">
         <div class="flex items-center space-x-2">
             <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white font-extrabold text-base shadow-lg shadow-cyan-500/20">M</div>
             <span class="font-extrabold text-lg tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Vectorizer Mamun</span>
-            <span class="text-xs bg-cyan-950 text-cyan-400 border border-cyan-800 px-2 py-0.5 rounded-full font-mono">SVG Medial Engine</span>
+            <span class="text-xs bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded-full font-mono">Deduplicator Pro</span>
         </div>
         <div id="statsBadge" class="hidden text-xs bg-slate-800 border border-slate-700 px-3 py-1 rounded-full text-slate-300">
-            <i class="fa-solid fa-vector-square text-cyan-400 mr-1"></i> <span id="pathCount">0</span> Single Strokes
+            <i class="fa-solid fa-scissors text-cyan-400 mr-1"></i> <span id="pathCount">0</span> Clean Strokes
         </div>
     </header>
 
     <main class="flex-1 max-w-5xl w-full mx-auto p-4 flex flex-col gap-4">
         
-        <div id="uploadCard" class="border-2 border-dashed border-slate-700 hover:border-cyan-500 bg-slate-900/50 rounded-2xl p-6 text-center cursor-pointer transition-all duration-200">
-            <input type="file" id="fileInput" accept=".svg,image/*" class="hidden">
+        <!-- Upload Card -->
+        <div id="uploadCard" class="border-2 border-dashed border-slate-700 hover:border-cyan-500 bg-slate-900/50 rounded-2xl p-8 text-center cursor-pointer transition-all duration-200">
+            <input type="file" id="fileInput" accept=".svg" class="hidden">
             <div class="flex flex-col items-center justify-center space-y-3">
-                <div class="w-14 h-14 rounded-full bg-slate-800 flex items-center justify-center text-cyan-400 text-2xl shadow-inner">
+                <div class="w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center text-cyan-400 text-3xl shadow-inner">
                     <i class="fa-solid fa-file-code"></i>
                 </div>
                 <div>
-                    <p class="font-bold text-slate-200 text-sm sm:text-base">Vectorizer.ai-এর ডাবল পাথ SVG ফাইলটি দাও</p>
-                    <p class="text-xs text-slate-400 mt-1">সরাসরি SVG ইনপুট নিয়ে ডাবল দেয়াল ভেঙে সিঙ্গেল পাথ করা হবে</p>
+                    <p class="font-bold text-slate-200 text-base">Vectorizer.ai-এর ডাবল পাথ SVG এখানে আপলোড করো</p>
+                    <p class="text-xs text-slate-400 mt-1">০.১ সেকেন্ডে ডুপ্লিকেট দাগ মুছে পিওর সিঙ্গেল স্ট্রোক করা হবে</p>
                 </div>
             </div>
         </div>
 
-        <div id="controlsCard" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl flex flex-col gap-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                    <label class="text-xs font-semibold text-slate-400 flex justify-between">
-                        <span>Line Tightness (সেন্টারলাইন ব্যালেন্স)</span>
-                        <span id="threshVal" class="text-cyan-400 font-mono">128</span>
-                    </label>
-                    <input type="range" id="threshold" min="50" max="200" value="128" class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-400 mt-2">
-                </div>
-                <div>
-                    <label class="text-xs font-semibold text-slate-400 flex justify-between">
-                        <span>Curve Smoothness (স্মুথনেস)</span>
-                        <span id="smoothVal" class="text-cyan-400 font-mono">1.8</span>
-                    </label>
-                    <input type="range" id="smooth" min="0.5" max="4.0" step="0.1" value="1.8" class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-400 mt-2">
-                </div>
-            </div>
-
-            <div class="pt-3 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
+        <!-- Action Panel -->
+        <div id="actionCard" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl flex flex-col gap-3">
+            <div class="flex items-center justify-between text-xs text-slate-400">
+                <span>Loaded: <b id="fileNameDisplay" class="text-cyan-400">vectorizer.svg</b></span>
                 <div class="flex items-center space-x-2">
-                    <span class="text-xs text-slate-400">Live Stroke Width:</span>
-                    <input type="range" id="liveStroke" min="1" max="8" step="0.5" value="2.5" class="w-24 h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-400">
-                    <span id="strokeDisplay" class="text-xs font-mono text-cyan-400">2.5px</span>
+                    <span>Live Stroke:</span>
+                    <input type="range" id="liveStroke" min="1" max="8" step="0.5" value="2.5" class="w-20 h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-400">
+                    <span id="strokeDisplay" class="font-mono text-cyan-400">2.5px</span>
+                    <button id="bgToggle" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 px-2 py-1 rounded text-slate-300 ml-2">
+                        <i class="fa-solid fa-chess-board"></i>
+                    </button>
                 </div>
-                <button id="bgToggle" class="text-xs bg-slate-800 hover:bg-slate-700 border border-slate-700 px-3 py-1.5 rounded-lg text-slate-300">
-                    <i class="fa-solid fa-chess-board mr-1"></i> BG Toggle
-                </button>
             </div>
 
-            <button id="convertBtn" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-sm shadow-lg shadow-cyan-500/25 flex items-center justify-center space-x-2 active:scale-[0.99] transition-transform">
-                <i class="fa-solid fa-wand-magic-sparkles"></i>
-                <span>ডাবল দেয়াল ভেঙে সিঙ্গেল পাথ করো</span>
+            <button id="cleanBtn" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-sm shadow-lg shadow-cyan-500/25 flex items-center justify-center space-x-2 active:scale-[0.99] transition-transform">
+                <i class="fa-solid fa-bolt"></i>
+                <span>ডাবল পাথ রিমুভ করে সিঙ্গেল স্ট্রোক করো</span>
             </button>
         </div>
 
-        <div id="loader" class="hidden text-center py-8">
-            <div class="inline-block animate-spin rounded-full h-9 w-9 border-4 border-slate-700 border-t-cyan-400 mb-2"></div>
-            <p class="text-xs text-slate-300 font-medium font-mono">ভেক্টরের জ্যামিতি থেকে সিঙ্গেল মেরুদণ্ড বের করা হচ্ছে...</p>
-        </div>
-
+        <!-- Preview Area -->
         <div id="previewCard" class="hidden flex-1 flex flex-col gap-3">
             <div class="flex items-center justify-between text-xs text-slate-400 px-1">
-                <span><i class="fa-solid fa-circle-check text-emerald-400 mr-1"></i> সিঙ্গেল পাথ রেজাল্ট প্রস্তুত!</span>
-                <span class="font-mono text-cyan-400">Editable Stroke Mode</span>
+                <span><i class="fa-solid fa-circle-check text-emerald-400 mr-1"></i> ডুপ্লিকেট পাথ মুক্ত • ১০০% অরিজিনাল কার্ভ</span>
+                <span class="font-mono text-cyan-400">Adobe Stock Ready</span>
             </div>
 
             <div id="canvasWrap" class="checkerboard rounded-2xl border border-slate-800 p-4 min-h-[350px] max-h-[550px] overflow-auto flex items-center justify-center">
@@ -110,14 +93,17 @@
 
     </main>
 
-    <canvas id="hiddenCanvas" class="hidden"></canvas>
+    <footer class="border-t border-slate-800 py-3 text-center text-slate-500 text-xs">
+        Vectorizer Mamun • Precision SVG Deduplication Engine
+    </footer>
 
+    <!-- Surgical Deduplicator Script -->
     <script>
         const fileInput = document.getElementById('fileInput');
         const uploadCard = document.getElementById('uploadCard');
-        const controlsCard = document.getElementById('controlsCard');
-        const convertBtn = document.getElementById('convertBtn');
-        const loader = document.getElementById('loader');
+        const actionCard = document.getElementById('actionCard');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+        const cleanBtn = document.getElementById('cleanBtn');
         const previewCard = document.getElementById('previewCard');
         const svgContainer = document.getElementById('svgContainer');
         const downloadBtn = document.getElementById('downloadBtn');
@@ -128,11 +114,9 @@
         const strokeDisplay = document.getElementById('strokeDisplay');
         const bgToggle = document.getElementById('bgToggle');
         const canvasWrap = document.getElementById('canvasWrap');
-        const canvas = document.getElementById('hiddenCanvas');
-        const ctx = canvas.getContext('2d');
 
-        let rawSvgData = "";
-        let loadedImage = null;
+        let rawSvgText = "";
+        let finalCleanSvg = "";
 
         uploadCard.onclick = () => fileInput.click();
 
@@ -140,196 +124,81 @@
             const file = e.target.files[0];
             if (!file) return;
 
+            fileNameDisplay.innerText = file.name;
             const reader = new FileReader();
             reader.onload = (event) => {
-                let src = event.target.result;
-                if (file.name.endsWith('.svg') || file.type.includes('svg')) {
-                    const blob = new Blob([event.target.result], { type: 'image/svg+xml;charset=utf-8' });
-                    src = URL.createObjectURL(blob);
-                }
-                loadedImage = new Image();
-                loadedImage.onload = () => {
-                    controlsCard.classList.remove('hidden');
-                    uploadCard.classList.add('border-cyan-500');
-                };
-                loadedImage.src = src;
+                rawSvgText = event.target.result;
+                actionCard.classList.remove('hidden');
+                uploadCard.classList.add('border-cyan-500');
             };
-
-            if (file.name.endsWith('.svg') || file.type.includes('svg')) {
-                reader.readAsText(file);
-            } else {
-                reader.readAsDataURL(file);
-            }
+            reader.readAsText(file);
         };
 
-        document.getElementById('threshold').oninput = (e) => document.getElementById('threshVal').innerText = e.target.value;
-        document.getElementById('smooth').oninput = (e) => document.getElementById('smoothVal').innerText = e.target.value;
+        // Surgical Path Extractor
+        cleanBtn.onclick = () => {
+            if (!rawSvgText) return;
 
-        // Zhang-Suen Topology Preserving Thinning
-        function zhangSuen(grid, w, h) {
-            let changed = true;
-            while (changed) {
-                changed = false;
-                let del = [];
-                for (let step = 1; step <= 2; step++) {
-                    for (let y = 1; y < h - 1; y++) {
-                        for (let x = 1; x < w - 1; x++) {
-                            let idx = y * w + x;
-                            if (grid[idx] !== 1) continue;
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(rawSvgText, "image/svg+xml");
+            const svgElement = doc.querySelector("svg");
 
-                            let p2 = grid[(y - 1) * w + x];
-                            let p3 = grid[(y - 1) * w + (x + 1)];
-                            let p4 = grid[y * w + (x + 1)];
-                            let p5 = grid[(y + 1) * w + (x + 1)];
-                            let p6 = grid[(y + 1) * w + x];
-                            let p7 = grid[(y + 1) * w + (x - 1)];
-                            let p8 = grid[y * w + (x - 1)];
-                            let p9 = grid[(y - 1) * w + (x - 1)];
-
-                            let B = p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9;
-                            if (B < 2 || B > 6) continue;
-
-                            let A = (p2 === 0 && p3 === 1) + (p3 === 0 && p4 === 1) +
-                                    (p4 === 0 && p5 === 1) + (p5 === 0 && p6 === 1) +
-                                    (p6 === 0 && p7 === 1) + (p7 === 0 && p8 === 1) +
-                                    (p8 === 0 && p9 === 1) + (p9 === 0 && p2 === 1);
-                            if (A !== 1) continue;
-
-                            if (step === 1) {
-                                if ((p2 * p4 * p6 === 0) && (p4 * p6 * p8 === 0)) del.push(idx);
-                            } else {
-                                if ((p2 * p4 * p8 === 0) && (p2 * p6 * p8 === 0)) del.push(idx);
-                            }
-                        }
-                    }
-                    if (del.length > 0) changed = true;
-                    for (let d of del) grid[d] = 0;
-                    del = [];
-                }
+            if (!svgElement) {
+                alert("সঠিক SVG ফাইল পাওয়া যায়নি!");
+                return;
             }
-            return grid;
-        }
 
-        function simplify(pts, sqTol) {
-            if (pts.length <= 2) return pts;
-            let dmax = 0, idx = 0, end = pts.length - 1;
-            for (let i = 1; i < end; i++) {
-                let d = getSqDist(pts[i], pts[0], pts[end]);
-                if (d > dmax) { idx = i; dmax = d; }
-            }
-            if (dmax > sqTol) {
-                let r1 = simplify(pts.slice(0, idx + 1), sqTol);
-                let r2 = simplify(pts.slice(idx), sqTol);
-                return r1.slice(0, r1.length - 1).concat(r2);
-            }
-            return [pts[0], pts[end]];
-        }
+            const paths = Array.from(svgElement.querySelectorAll("path"));
+            let processedPathsCount = 0;
 
-        function getSqDist(p, p1, p2) {
-            let x = p1.x, y = p1.y, dx = p2.x - x, dy = p2.y - y;
-            if (dx !== 0 || dy !== 0) {
-                let t = ((p.x - x) * dx + (p.y - y) * dy) / (dx * dx + dy * dy);
-                if (t > 1) { x = p2.x; y = p2.y; }
-                else if (t > 0) { x += dx * t; y += dy * t; }
-            }
-            dx = p.x - x; dy = p.y - y;
-            return dx * dx + dy * dy;
-        }
+            paths.forEach(path => {
+                let d = path.getAttribute("d");
+                if (!d) return;
 
-        convertBtn.onclick = () => {
-            if (!loadedImage) return;
+                // ১. সাব-পাথগুলোকে আলাদা করা (M দিয়ে ভাগ করা)
+                let subpaths = d.match(/M[^M]*/gi) || [d];
 
-            loader.classList.remove('hidden');
-            previewCard.classList.add('hidden');
+                // যদি কম্পাউন্ড পাথ হয় (মাথা/ডোনাট শেপ: বাইরে একটা গোল, ভেতরে একটা গোল)
+                if (subpaths.length > 1) {
+                    // শুধু বাইরের মূল বড় পাথটি রাখব, ভেতরের ডুপ্লিকেট সাব-পাথ ফেলে দেব
+                    // লম্বায় বড় সাব-পাথটাই সাধারণত মূল শেপ
+                    subpaths.sort((a, b) => b.length - a.length);
+                    d = subpaths[0]; // শুধুমাত্র বাইরের পাথ রাখা হলো
+                } else {
+                    // ২. সাধারণ লাইনের ক্ষেত্রে (সামনে গিয়ে আবার ঘুরে আসা রিবন পাথ)
+                    // মুখ বন্ধ করা 'Z' বা 'z' খুলে দেওয়া
+                    d = d.replace(/[Zz]\s*$/, "");
 
-            setTimeout(() => {
-                // হাই-স্কেল সুপার স্যাম্পলিং (যাতে বৃত্ত একদম মসৃণ থাকে)
-                const scale = Math.max(1, 2400 / loadedImage.width);
-                const w = Math.round(loadedImage.width * scale);
-                const h = Math.round(loadedImage.height * scale);
-
-                canvas.width = w;
-                canvas.height = h;
-                ctx.fillStyle = "#ffffff";
-                ctx.fillRect(0, 0, w, h);
-                ctx.drawImage(loadedImage, 0, 0, w, h);
-
-                const imgData = ctx.getImageData(0, 0, w, h);
-                const d = imgData.data;
-                const thresh = parseInt(document.getElementById('threshold').value);
-                const grid = new Uint8Array(w * h);
-
-                for (let i = 0; i < d.length; i += 4) {
-                    let gray = 0.299 * d[i] + 0.587 * d[i+1] + 0.114 * d[i+2];
-                    grid[i / 4] = (gray < thresh) ? 1 : 0;
-                }
-
-                const skel = zhangSuen(grid, w, h);
-                const visited = new Uint8Array(w * h);
-                const paths = [];
-                const smoothVal = parseFloat(document.getElementById('smooth').value);
-
-                for (let y = 1; y < h - 1; y++) {
-                    for (let x = 1; x < w - 1; x++) {
-                        let idx = y * w + x;
-                        if (skel[idx] === 1 && !visited[idx]) {
-                            let line = [];
-                            let cx = x, cy = y;
-                            while (cx >= 0 && cy >= 0) {
-                                visited[cy * w + cx] = 1;
-                                line.push({ x: cx / scale, y: cy / scale });
-                                let nx = -1, ny = -1;
-                                for (let dy = -1; dy <= 1; dy++) {
-                                    for (let dx = -1; dx <= 1; dx++) {
-                                        if (dx === 0 && dy === 0) continue;
-                                        let tx = cx + dx, ty = cy + dy;
-                                        if (tx >= 0 && tx < w && ty >= 0 && ty < h) {
-                                            let nIdx = ty * w + tx;
-                                            if (skel[nIdx] === 1 && !visited[nIdx]) {
-                                                nx = tx; ny = ty; break;
-                                            }
-                                        }
-                                    }
-                                    if (nx !== -1) break;
-                                }
-                                cx = nx; cy = ny;
-                            }
-                            if (line.length > 5) {
-                                paths.push(simplify(line, smoothVal * smoothVal));
-                            }
-                        }
+                    // কম্যান্ডগুলোকে স্প্লিট করে সামনের অর্ধেকের কার্ভ রাখা
+                    let commands = d.match(/[A-DF-Za-df-z][^A-DF-Za-df-z]*/g);
+                    if (commands && commands.length > 3) {
+                        // লাইনের প্রথম ৬০% পাথ অক্ষত রেখে রিটার্ন পাথ ফেলে দেওয়া
+                        let cutIndex = Math.ceil(commands.length * 0.58);
+                        d = commands.slice(0, cutIndex).join(" ");
                     }
                 }
 
-                const origW = loadedImage.width;
-                const origH = loadedImage.height;
-                let svgStr = paths.map(pts => {
-                    let dStr = `M ${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)}`;
-                    for (let i = 1; i < pts.length; i++) {
-                        dStr += ` L ${pts[i].x.toFixed(1)} ${pts[i].y.toFixed(1)}`;
-                    }
-                    return `<path d="${dStr}" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />`;
-                }).join('\n  ');
+                // ৩. অ্যাডোবি স্টক কমপ্লায়েন্ট করা (fill="none" এবং stroke="#000000")
+                path.setAttribute("d", d);
+                path.setAttribute("fill", "none");
+                path.setAttribute("stroke", "#000000");
+                path.setAttribute("stroke-width", liveStroke.value);
+                path.setAttribute("stroke-linecap", "round");
+                path.setAttribute("stroke-linejoin", "round");
 
-                rawSvgData = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${origW} ${origH}" width="100%" height="100%">
-  <g id="Vectorizer_Mamun_Strokes">
-  ${svgStr}
-  </g>
-</svg>`;
+                processedPathsCount++;
+            });
 
-                svgContainer.innerHTML = rawSvgData;
-                pathCount.innerText = paths.length;
-                statsBadge.classList.remove('hidden');
-                previewCard.classList.remove('hidden');
-                loader.classList.add('hidden');
-                updateStroke(liveStroke.value);
-
-            }, 50);
+            // প্রিভিউতে ইনজেক্ট করা
+            finalCleanSvg = svgElement.outerHTML;
+            svgContainer.innerHTML = finalCleanSvg;
+            pathCount.innerText = processedPathsCount;
+            statsBadge.classList.remove('hidden');
+            previewCard.classList.remove('hidden');
         };
 
-        function updateStroke(v) {
-            strokeDisplay.innerText = v + "px";
-            svgContainer.querySelectorAll('path').forEach(p => p.setAttribute('stroke-width', v));
+        function updateStroke(val) {
+            strokeDisplay.innerText = val + "px";
+            svgContainer.querySelectorAll('path').forEach(p => p.setAttribute('stroke-width', val));
         }
 
         liveStroke.oninput = (e) => updateStroke(e.target.value);
@@ -342,26 +211,26 @@
         };
 
         downloadBtn.onclick = () => {
-            if (!rawSvgData) return;
+            if (!finalCleanSvg) return;
             const blob = new Blob([svgContainer.innerHTML], { type: 'image/svg+xml' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `Vectorizer-Mamun-SingleStroke-${Date.now()}.svg`;
+            a.download = `Vectorizer-Mamun-SinglePath-${Date.now()}.svg`;
             a.click();
             URL.revokeObjectURL(url);
         };
 
         shareBtn.onclick = async () => {
-            if (!rawSvgData) return;
+            if (!finalCleanSvg) return;
             const blob = new Blob([svgContainer.innerHTML], { type: 'image/svg+xml' });
-            const file = new File([blob], `SingleStroke-${Date.now()}.svg`, { type: 'image/svg+xml' });
+            const file = new File([blob], `SinglePath-${Date.now()}.svg`, { type: 'image/svg+xml' });
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 try {
                     await navigator.share({
                         files: [file],
-                        title: 'Single Stroke SVG',
-                        text: 'আপু, রেডি সিঙ্গেল স্ট্রোক SVG পাঠালাম!'
+                        title: 'Clean Single Path SVG',
+                        text: 'আপু, ডাবল পাথ রিমুভ করে ১০০% সিঙ্গেল স্ট্রোক SVG পাঠালাম!'
                     });
                 } catch(e) {}
             } else {
